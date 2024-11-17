@@ -85,14 +85,14 @@ def transfer():
     receiver = User.query.get(data['receiver_id'])
     amount = data.get('amount', 0)
     if not sender or not receiver or amount <= 0 or sender.balance < amount:
-        return jsonify({'message': 'Invalid transfer details'}), 400
+        return jsonify({'message': f"Invalid transfer details, saldo insuficiente: solo tienes: {sender.balance} de saldo "}), 400
     sender.balance -= amount
     receiver.balance += amount
     transaction = Transaction(
         sender_id=sender.id, receiver_id=receiver.id, amount=amount)
     db.session.add(transaction)
     db.session.commit()
-    return jsonify({'message': 'Transfer successful'})
+    return jsonify({'message': 'Transfer successful - Se transfirio exitosamente'})
 
 
 @app.route('/user', methods=['GET'])
